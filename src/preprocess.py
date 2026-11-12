@@ -24,6 +24,11 @@ def target_isolation(df):
 
     return X, y
 
+def feats_engineering(df):
+    df["Study_Hours"] = df["Study_Hours_Per_Week"] / 7
+    df = df.drop(columns="Study_Hours_Per_Week")
+    return df
+
 def split_data(X, y):
     X_train, X_test, y_train, y_test = train_test_split(
         X,
@@ -39,7 +44,7 @@ def feats_categorization():
     "Age",
     "Year_of_Study",
     "Sleep_Hours",
-    "Study_Hours_Per_Week",
+    "Study_Hours",
     "GPA",
     "Social_Media_Hours",
     "Screen_Time_Hours",
