@@ -1,3 +1,4 @@
+import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.pipeline import Pipeline
@@ -101,3 +102,23 @@ def preprocessor_col_transformer(numeric_pipeline, numerical_features, nominal_p
         ("ord", ordinal_pipeline, ordinal_features)
     ])
     return preprocessor
+
+def preprocess(df):
+    df = correct_feature(df)
+    df = feats_engineering(df)
+    X, y = target_isolation(df)
+    X_train, X_test, y_train, y_test = split_data(X, y)
+    numerical_features, nominal_features, ordinal_features = feats_categorization()
+    numeric_pipeline = numericals_pipeline()
+    nominal_pipeline = nominals_pipeline()
+    ordinal_pipeline = ordinals_pipeline()
+    preprocessor = preprocessor_col_transformer(
+        numeric_pipeline,
+        numerical_features,
+        nominal_pipeline,
+        nominal_features,
+        ordinal_pipeline,
+        ordinal_features,
+    )
+
+    return X_train, X_test, y_train, y_test, preprocessor
